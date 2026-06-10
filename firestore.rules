@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // catch-all default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_+@.-]+$');
+    }
+    
+    function incoming() {
+      return request.resource.data;
+    }
+    
+    function isValidSubscriber(data) {
+      return data.keys().hasAll(['email', 'nodeId', 'joinedAt'])
+        && data.keys().size() == 3
+        && data.email is string
+        && data.email.size() >= 3
+        && data.email.size() <= 256
+        && data.nodeId is string
+        && data.nodeId.size() >= 5
+        && data.nodeId.size() <= 64
+        && data.joinedAt is string
+        && data.joinedAt.size() >= 10
+        && data.joinedAt.size() <= 50;
+    }
+
+    // subscribers collection rules
+    match /subscribers/{subscriberId} {
+      // allow single document get if ID is valid
+      allow get: if isValidId(subscriberId);
+      
+      // allow creation of new subscriber document if schema is fully valid
+      allow create: if isValidId(subscriberId) && isValidSubscriber(incoming());
+      
+      // allow deletion of subscriber document (deregistration)
+      allow delete: if isValidId(subscriberId);
+      
+      // prevent list queries and updates
+      allow list, update: if false;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Carbon Neutral Community LTD",
+  "description": "A stunning interactive countdown landing page, interactive eco-vital nodes, and bio-grid network newsletter for the Carbon Neutral Community LTD launch.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

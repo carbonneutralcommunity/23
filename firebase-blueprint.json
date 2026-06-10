@@ -1,0 +1,34 @@
+{
+  "entities": {
+    "subscribers": {
+      "title": "Subscribers",
+      "description": "Registered newsletter and bio-grid subscribers",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email address of subscriber"
+        },
+        "nodeId": {
+          "type": "string",
+          "description": "Assigned unique bio-grid CNC node identifier"
+        },
+        "joinedAt": {
+          "type": "string",
+          "description": "Timestamp string indicating when user joined"
+        }
+      },
+      "required": [
+        "email",
+        "nodeId",
+        "joinedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/subscribers/{subscriberId}": {
+      "schema": "subscribers",
+      "description": "Active bio-grid registered contributors and nodes"
+    }
+  }
+}
